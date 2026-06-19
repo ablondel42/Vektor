@@ -3,6 +3,7 @@
 Vektor is a full-stack platform for orchestrating AI-driven workflows, approvals, and audits in a clean, production-ready environment.
 It combines a Java Spring Boot backend with an Angular frontend to help manage complex processes with clarity and control.
 
+```mermaid
 flowchart TD
   U[User / Operator]
 
@@ -30,6 +31,7 @@ flowchart TD
   N8N --> M
   N8N --> R
   N8N --> BE
+```
 
 ## Why Vektor exists
 
