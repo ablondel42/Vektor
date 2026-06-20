@@ -1,169 +1,228 @@
 # Vektor
 
-Vektor is a full-stack platform for orchestrating AI-driven workflows, approvals, and audits in a clean, production-ready environment.
-It combines a Java Spring Boot backend with an Angular frontend to help manage complex processes with clarity and control.
+Vektor is a workflow orchestration platform designed to manage automated processes, execution tracking, and auditability in a clean, production-oriented architecture.
 
-```mermaid
-flowchart TD
-  U[User / Operator]
-
-  subgraph P[Vektor Platform]
-    FE[Angular UI]
-    BE[Spring Boot API]
-  end
-
-  subgraph D[Data]
-    DB[(PostgreSQL)]
-    AL[(Audit Log)]
-  end
-
-  subgraph W[Workflow Engine]
-    N8N[n8n Container]
-    M[Mock Workflows]
-    R[Real Workflows]
-  end
-
-  U --> FE
-  FE --> BE
-  BE --> DB
-  BE --> AL
-  BE --> N8N
-  N8N --> M
-  N8N --> R
-  N8N --> BE
-```
-
-## Why Vektor exists
-
-Vektor is my personal project to build a serious full-stack product that feels closer to a real internal platform than a demo app.
-The goal is to explore how to design and ship a maintainable system for workflow orchestration, human approvals, auditability, and future AI-agent integrations.
-
-## What it will do
-
-- Orchestrate multi-step workflows.
-- Manage approval gates for sensitive actions.
-- Keep a full audit trail of decisions and changes.
-- Provide a clear UI to monitor jobs, states, and system health.
-- Support future AI-assisted features without turning the project into a toy demo.
-
-## Current status
-
-This project is in early development.
-The initial focus is on the foundation: clean repository structure, production-ready boilerplate, backend/frontend separation, and a solid developer experience.
+It combines a React frontend, a NestJS backend, and a PostgreSQL data layer, with workflow automation powered by Make, authentication handled by Auth0, and observability provided by Sentry.
 
 ## Tech stack
 
-### Backend
-- Java
-- Spring Boot
-- Spring Web
-- Spring Data JPA
-- Spring Security
-- Spring Validation
-- Spring Boot Actuator
-- Flyway
-- PostgreSQL
-
 ### Frontend
-- Angular
+- React
 - TypeScript
-- Tailwind CSS
-- RxJS
 
-### Tooling
-- Maven
-- Node.js / npm
-- ESLint
-- Prettier
+### Backend
+- NestJS
+- TypeScript
+
+### Database
+- PostgreSQL
+- Supabase
+
+### Infrastructure
 - Docker
+
+### Automation and internal tools
+- Make
+- Auth0
+- Sentry
+
+### Design
+- Figma
+
+## Why Vektor exists
+
+Vektor is built as a serious full-stack product focused on workflow orchestration rather than as a simple demo app.
+
+The goal is to create a maintainable platform that can:
+- run structured workflows,
+- track execution step by step,
+- store useful audit logs,
+- support future user access control and RBAC,
+- integrate with internal and external automation tools.
+
+## Core domain
+
+The current domain model is built around four main entities:
+
+- `workflow`: the definition of a workflow.
+- `workflow_run`: one execution of a workflow.
+- `workflow_step`: one executed step inside a workflow run.
+- `audit_log`: a log entry produced by a workflow step.
+
+## Architecture overview
+
+Vektor follows a simple full-stack architecture:
+
+- **React** handles the user interface.
+- **NestJS** exposes the API and owns business logic.
+- **PostgreSQL** stores the core application data.
+- **Supabase** is used as the managed PostgreSQL platform.
+- **Make** is used as a no-code workflow automation tool for orchestrating integrations and internal processes.
+- **Auth0** handles authentication and identity.
+- **Sentry** handles error tracking and observability.
+- **Figma** is used for product and interface design.
 
 ## Repository structure
 
 ```text
 vektor/
-├── backend/
-│   ├── .mvn/
-│   ├── src/
-│   ├── mvnw
-│   ├── mvnw.cmd
-│   ├── pom.xml
-│   └── application.yaml
 ├── frontend/
-│   ├── src/
-│   ├── public/
-│   ├── angular.json
-│   ├── package.json
-│   ├── package-lock.json
-│   └── tsconfig*.json
+├── backend/
+├── docs/
+├── docker/
+├── .env.example
+├── docker-compose.yml
 └── README.md
 ```
 
-## Architecture overview
+## Data model
 
-Vektor is organized as a monorepo with two main applications:
+The current relational structure is intentionally simple:
 
-- `backend/` exposes a REST API and owns business logic, persistence, security, and audit data.
-- `frontend/` consumes the API and provides the user interface for workflow management and monitoring.
-
-The backend is designed to stay API-first, while the frontend stays focused on user experience and state presentation.
-This separation keeps the codebase easier to understand, easier to scale, and easier to refactor later.
-
-## Getting started
-
-### Prerequisites
-- Java 25
-- Node.js
-- npm
-- Docker
-- PostgreSQL
-
-### Backend
-```bash
-cd backend
-./mvnw spring-boot:run
+```text
+workflow 1 ───< workflow_run
+workflow_run 1 ───< workflow_step
+workflow_step 1 ───< audit_log
 ```
 
-### Frontend
+### Entity summary
+
+#### workflow
+Represents the definition of a workflow.
+
+#### workflow_run
+Represents one execution of a workflow.
+
+#### workflow_step
+Represents one executed step inside a workflow run, including its input, output, and status.
+
+#### audit_log
+Represents the log entries generated by a workflow step.
+
+## Local development
+
+### Prerequisites
+
+Before running the project locally, make sure you have:
+
+- Node.js 20+
+- npm
+- Docker
+- Docker Compose
+- a PostgreSQL database, either local or via Supabase
+
+### 1. Clone the repository
+
+```bash
+git clone <repo-url>
+cd vektor
+```
+
+### 2. Configure environment variables
+
+Create a local environment file from the example template:
+
+```bash
+cp .env.example .env
+```
+
+Typical environment variables include:
+
+```env
+DATABASE_URL=
+SUPABASE_URL=
+SUPABASE_ANON_KEY=
+AUTH0_DOMAIN=
+AUTH0_CLIENT_ID=
+AUTH0_AUDIENCE=
+SENTRY_DSN=
+```
+
+### 3. Start the database and supporting services
+
+If your local setup uses Docker, start the required containers with Docker Compose:
+
+```bash
+docker compose up -d
+```
+
+### 4. Start the backend
+
+```bash
+cd backend
+npm install
+npm run start:dev
+```
+
+### 5. Start the frontend
+
 ```bash
 cd frontend
 npm install
-npm start
+npm run dev
 ```
 
-### Full stack with Docker
-A Docker Compose setup will be added later to run the full stack locally with one command.
+### 6. Open the application
 
-## Roadmap
+Typical local ports:
 
-### Phase 1
-- Define the core domain model.
-- Add authentication and roles.
-- Create the first workflow entities.
-- Connect Angular to the backend API.
+- Frontend: `http://localhost:5173`
+- Backend: `http://localhost:3000`
 
-### Phase 2
-- Add approvals and audit trail.
-- Build the dashboard UI.
-- Add job monitoring and system health views.
+## Product tooling
 
-### Phase 3
-- Add workflow templates.
-- Add module generation.
-- Introduce AI-assisted features for summaries and suggestions.
+### Make
+Make is used as a no-code workflow automation tool to orchestrate internal processes and integrations.
+
+It is part of the product ecosystem, not part of the local terminal setup.
+
+### Auth0
+Auth0 is used for authentication and identity management.
+
+It is intended to support:
+- user authentication,
+- protected routes and APIs,
+- future RBAC and workflow-level access control.
+
+### Sentry
+Sentry is used for:
+- frontend error tracking,
+- backend error tracking,
+- monitoring and debugging production issues.
+
+### Supabase
+Supabase is used primarily as the managed PostgreSQL layer.
+
+In this project, it should be treated first as a database platform rather than as the main authentication provider, since Auth0 is responsible for identity.
+
+## Current direction
+
+The current implementation focuses on:
+- setting up a clean boilerplate,
+- defining the domain model,
+- creating a stable full-stack structure,
+- preparing the system for future access control and automation features.
+
+## Future improvements
+
+Planned next steps include:
+- authentication integration with Auth0,
+- workflow ownership and sharing,
+- RBAC and user-based permissions,
+- richer audit trails,
+- workflow dashboards,
+- admin and monitoring views,
+- deeper automation flows with Make.
 
 ## Design principles
 
-- Keep the project production-oriented.
-- Prefer clarity over cleverness.
-- Build small, testable modules.
-- Use explicit workflows and auditability.
-- Add AI only where it creates real value.
+- Keep the architecture simple.
+- Prefer clarity over abstraction.
+- Build for maintainability.
+- Make workflow execution observable.
+- Keep the domain model explicit.
+- Add complexity only when it creates clear value.
 
-## Contributing
+## Notes
 
-This is currently a personal project, but the codebase is structured to stay readable and easy to extend.
-If it becomes open to contributions later, guidelines will be added here.
-
-## License
-
-License to be defined.
+This project is intentionally being designed as a production-oriented internal platform rather than a toy prototype.
