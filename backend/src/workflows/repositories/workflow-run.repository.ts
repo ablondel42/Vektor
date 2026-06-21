@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateWorkflowRunDto } from '../dto/create-workflow-run.dto';
 import { WorkflowRun } from '../entities/workflow-run.entity';
-import { WorkflowRunStatus } from '../types/workflow.types';
+import { WorkflowRunStatus } from '../types/workflow.enums';
 
 @Injectable()
 export class WorkflowRunRepository {

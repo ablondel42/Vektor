@@ -6,8 +6,9 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { AuditLogLevel, JsonObject } from '../types/workflow.types';
+import { AuditLogLevel } from '../types/workflow.enums';
 import { WorkflowRun } from './workflow-run.entity';
+import { JsonObject } from '../types/workflow.types';
 
 @Entity('audit_log')
 export class AuditLog {

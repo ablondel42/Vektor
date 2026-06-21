@@ -7,7 +7,7 @@ import {
   IsUUID,
   MaxLength,
 } from 'class-validator';
-import { AuditLogLevel } from '../types/workflow.types';
+import { AuditLogLevel } from '../types/workflow.enums';
 import type { JsonObject } from '../types/workflow.types';
 
 export class CreateAuditLogDto {

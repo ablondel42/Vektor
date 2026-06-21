@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateWorkflowStepDto } from '../dto/create-workflow-step.dto';
 import { WorkflowStep } from '../entities/workflow-step.entity';
-import { WorkflowStepStatus } from '../types/workflow.types';
+import { WorkflowStepStatus } from '../types/workflow.enums';
 
 @Injectable()
 export class WorkflowStepRepository {

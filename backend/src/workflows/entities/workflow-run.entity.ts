@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { AuditLogLevel, JsonObject, WorkflowRunStatus } from '../types/workflow.types';
+import { WorkflowRunStatus } from '../types/workflow.enums';
 import { AuditLog } from './audit-log.entity';
 import { WorkflowStep } from './workflow-step.entity';
 import { Workflow } from './workflow.entity';

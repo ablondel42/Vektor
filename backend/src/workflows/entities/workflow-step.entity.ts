@@ -7,8 +7,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { JsonObject, WorkflowStepStatus } from '../types/workflow.types';
+import { WorkflowStepStatus } from '../types/workflow.enums';
 import { WorkflowRun } from './workflow-run.entity';
+import { JsonObject } from '../types/workflow.types';
 
 @Entity('workflow_step')
 export class WorkflowStep {

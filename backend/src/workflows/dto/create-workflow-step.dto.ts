@@ -10,7 +10,7 @@ import {
   Min,
 } from 'class-validator';
 import type { JsonObject } from '../types/workflow.types';
-import { WorkflowStepStatus } from '../types/workflow.types';
+import { WorkflowStepStatus } from '../types/workflow.enums';
 
 export class CreateWorkflowStepDto {
   @IsUUID('4')

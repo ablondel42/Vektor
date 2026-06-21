@@ -1,5 +1,5 @@
 import { IsEnum, IsOptional, IsUUID } from 'class-validator';
-import { WorkflowRunStatus } from '../types/workflow.types';
+import { WorkflowRunStatus } from '../types/workflow.enums';
 
 export class CreateWorkflowRunDto {
   @IsUUID('4')
