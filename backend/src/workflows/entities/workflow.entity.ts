@@ -2,9 +2,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { WorkflowRun } from './workflow-run.entity';
 
 @Entity('workflow')
 export class Workflow {
@@ -15,13 +17,19 @@ export class Workflow {
   name!: string;
 
   @Column({ type: 'text', nullable: true })
-  description?: string;
+  description!: string | null;
 
   @Column({ type: 'int', default: 1 })
-  version?: number;
+  version!: number;
 
-  @Column({ name: 'is_active', type: 'boolean', default: false })
+  @Column({ name: 'is_active', type: 'boolean', default: true })
   isActive!: boolean;
+
+  @OneToMany(
+    () => WorkflowRun,
+    (workflowRun: WorkflowRun) => workflowRun.workflow,
+  )
+  runs!: WorkflowRun[];
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
   createdAt!: Date;

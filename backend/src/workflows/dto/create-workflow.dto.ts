@@ -1,15 +1,25 @@
-import { IsInt, IsOptional, IsString, Min } from 'class-validator';
+import {
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MaxLength,
+  Min,
+} from 'class-validator';
 
 export class CreateWorkflowDto {
   @IsString()
-  name?: string;
+  @IsNotEmpty()
+  @MaxLength(120)
+  readonly name!: string;
 
   @IsOptional()
   @IsString()
-  description?: string;
+  @MaxLength(2000)
+  readonly description?: string;
 
   @IsOptional()
   @IsInt()
   @Min(1)
-  version?: number;
+  readonly version?: number;
 }
